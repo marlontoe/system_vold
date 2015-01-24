@@ -539,7 +539,7 @@ int Volume::mountVol() {
                 }
                 #endif
 
-                if (F2FS::doMount(devicePath, getMountpoint(), false, false, false, true)) {
+                if (F2FS::doMount(devicePath, getMountpoint(), false, false, false, true, mOpts)) {
                     SLOGE("%s failed to mount via F2FS (%s)\n", devicePath, strerror(errno));
                     continue;
                 }

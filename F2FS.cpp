@@ -47,10 +47,14 @@ static char F2FS_FSCK[] = "/system/bin/fsck.f2fs";
 static char F2FS_MKFS[] = "/system/bin/mkfs.f2fs";
 
 int F2FS::doMount(const char *fsPath, const char *mountPoint, bool ro, bool
-        remount, bool executable, bool sdcard) {
+        remount, bool executable, bool sdcard, const char *mountOpts) {
     int rc;
     unsigned long flags;
-    char data[255]  = "inline_xattr,background_gc=off,active_logs=2";
+    char data[1024];
+
+    data[0] = '\0';
+    if (mountOpts)
+        strlcat(data, mountOpts, sizeof(data));
 
     flags = MS_NOATIME | MS_NODEV | MS_NOSUID | MS_DIRSYNC;
 
@@ -60,7 +64,9 @@ int F2FS::doMount(const char *fsPath, const char *mountPoint, bool ro, bool
 
     if (sdcard) {
         // Mount external volumes with forced context
-        strcat(data, ",context=u:object_r:sdcard_posix:s0");
+        if (data[0])
+            strlcat(data, ",", sizeof(data));
+        strlcat(data, "context=u:object_r:sdcard_posix:s0", sizeof(data));
     }
 
     rc = mount(fsPath, mountPoint, "f2fs", flags, data);

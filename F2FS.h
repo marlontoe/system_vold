@@ -22,7 +22,7 @@
 class F2FS {
 public:
     static int doMount(const char *fsPath, const char *mountPoint, bool ro, bool remount,
-            bool executable, bool sdcard);
+            bool executable, bool sdcard, const char *mountOpts = NULL);
     static int check(const char *fsPath);
     static int format(const char *fsPath);
 };
