@@ -65,12 +65,6 @@ int F2FS::doMount(const char *fsPath, const char *mountPoint, bool ro, bool
 
     rc = mount(fsPath, mountPoint, "f2fs", flags, data);
 
-    if (sdcard && rc == 0) {
-        // Write access workaround
-        chown(mountPoint, AID_MEDIA_RW, AID_MEDIA_RW);
-        chmod(mountPoint, 0755);
-    }
-
     if (rc && errno == EROFS) {
         SLOGE("%s appears to be a read only filesystem - retrying mount RO", fsPath);
         flags |= MS_RDONLY;
