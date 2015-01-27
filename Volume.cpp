@@ -505,7 +505,7 @@ int Volume::mountVol() {
                     return -1;
                 }
 
-                if (Ext4::doMount(devicePath, getMountpoint(), false, false, false, true, mOpts)) {
+                if (Ext4::doMount(devicePath, getMountpoint(), false, false, false, mOpts)) {
                     SLOGE("%s failed to mount via EXT4 (%s)\n", devicePath, strerror(errno));
                     continue;
                 }
@@ -539,7 +539,7 @@ int Volume::mountVol() {
                 }
                 #endif
 
-                if (F2FS::doMount(devicePath, getMountpoint(), false, false, false, true, mOpts)) {
+                if (F2FS::doMount(devicePath, getMountpoint(), false, false, false, mOpts)) {
                     SLOGE("%s failed to mount via F2FS (%s)\n", devicePath, strerror(errno));
                     continue;
                 }

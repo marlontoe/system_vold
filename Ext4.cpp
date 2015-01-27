@@ -49,7 +49,7 @@ static char MKEXT4FS_PATH[] = "/system/bin/make_ext4fs";
 static char MKE2FS_PATH[] = "/system/bin/mke2fs";
 
 int Ext4::doMount(const char *fsPath, const char *mountPoint, bool ro, bool remount,
-        bool executable, bool sdcard, const char *mountOpts) {
+        bool executable, const char *mountOpts) {
     int rc;
     unsigned long flags;
     char data[1024];
@@ -63,13 +63,6 @@ int Ext4::doMount(const char *fsPath, const char *mountPoint, bool ro, bool remo
     flags |= (executable ? 0 : MS_NOEXEC);
     flags |= (ro ? MS_RDONLY : 0);
     flags |= (remount ? MS_REMOUNT : 0);
-
-    if (sdcard) {
-        // Mount external volumes with forced context
-        if (data[0])
-            strlcat(data, ",", sizeof(data));
-        strlcat(data, "context=u:object_r:sdcard_posix:s0", sizeof(data));
-    }
 
     rc = mount(fsPath, mountPoint, "ext4", flags, data);
 
